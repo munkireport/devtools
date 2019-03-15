@@ -1,4 +1,4 @@
-<h2 data-i18n="devtools.clienttabtitle"></h2>
+<h2 data-i18n="devtools.clienttab"></h2>
 	
 <div id="devtools-msg" data-i18n="listing.loading" class="col-lg-12 text-center"></div>
 	<div id="devtools-view" class="row hide">
