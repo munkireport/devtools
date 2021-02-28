@@ -1,0 +1,25 @@
+i18n_title: devtools.reporttitle
+not_null_column: devtools_version
+table:
+    -
+        column: machine.computer_name
+        i18n_header: listing.computername
+        formatter: clientDetail
+        tab_link: devtools
+    -
+        column: reportdata.serial_number
+        i18n_header: serial
+    - {i18n_header: devtools.xcode_version, column: devtools.xcode_version,}
+    - {i18n_header: devtools.devtools_version_short, column: devtools.devtools_version}
+    - {i18n_header: devtools.cli_tools_short, column: devtools.cli_tools}
+    - {i18n_header: devtools.xquartz, column: devtools.xquartz}
+    - {i18n_header: devtools.macos_sdks, column: devtools.macos_sdks}
+    - {i18n_header: devtools.ios_sdks, column: devtools.ios_sdks}
+    - {i18n_header: devtools.ios_sim_sdks, column: devtools.ios_simulator_sdks}
+    - {i18n_header: devtools.ipados_sdks, column: devtools.ipados_sdks}
+    - {i18n_header: devtools.ipados_sim_sdks, column: devtools.ipados_simulator_sdks}
+    - {i18n_header: devtools.tvos_sdks, column: devtools.tvos_sdks}
+    - {i18n_header: devtools.tvos_sim_sdks, column: devtools.watchos_sdks}
+    - {i18n_header: devtools.watchos_sdks, column: devtools.tvos_simulator_sdks}
+    - {i18n_header: devtools.watchos_sim_sdks, column: devtools.watchos_simulator_sdks}
+    - {i18n_header: devtools.devtools_path_short, column: devtools.devtools_path}

@@ -1,0 +1,8 @@
+client_tabs:
+    devtools:
+        view: devtools_tab
+        i18n: devtools.clienttab
+listings:
+    devtools:
+        view: devtools_listing
+        i18n: devtools.clienttab

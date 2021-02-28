@@ -6,35 +6,37 @@ class Devtools_model extends \Model {
 
 	function __construct($serial='')
 	{
-		parent::__construct('id', 'devtools'); //primary key, tablename
+		parent::__construct('id', 'devtools'); // Primary key, tablename
 		$this->rs['id'] = '';
-		$this->rs['serial_number'] = $serial; $this->rt['serial_number'] = 'VARCHAR(255) UNIQUE';
+		$this->rs['serial_number'] = $serial;
 		$this->rs['cli_tools'] = '';
 		$this->rs['dashcode_version'] = '';
-		$this->rs['devtools_path'] = ''; $this->rt['devtools_path'] = 'TEXT';
+		$this->rs['devtools_path'] = '';
 		$this->rs['devtools_version'] = '';
 		$this->rs['instruments_version'] = '';
 		$this->rs['interface_builder_version'] = '';
-		$this->rs['ios_sdks'] = ''; $this->rt['ios_sdks'] = 'TEXT';
-		$this->rs['ios_simulator_sdks'] = ''; $this->rt['ios_simulator_sdks'] = 'TEXT';
-		$this->rs['macos_sdks'] = ''; $this->rt['macos_sdks'] = 'TEXT';
-		$this->rs['tvos_sdks'] = ''; $this->rt['tvos_sdks'] = 'TEXT';
-		$this->rs['tvos_simulator_sdks'] = ''; $this->rt['tvos_simulator_sdks'] = 'TEXT';
-		$this->rs['watchos_sdks'] = ''; $this->rt['watchos_sdks'] = 'TEXT';
-		$this->rs['watchos_simulator_sdks'] = ''; $this->rt['watchos_simulator_sdks'] = 'TEXT';
+		$this->rs['ios_sdks'] = '';
+		$this->rs['ios_simulator_sdks'] = '';
+		$this->rs['macos_sdks'] = '';
+		$this->rs['tvos_sdks'] = '';
+		$this->rs['tvos_simulator_sdks'] = '';
+		$this->rs['watchos_sdks'] = '';
+		$this->rs['watchos_simulator_sdks'] = '';
 		$this->rs['xcode_version'] = '';
 		$this->rs['xquartz'] = '';
+		$this->rs['ipados_sdks'] = '';
+		$this->rs['ipados_simulator_sdks'] = '';
 
 		if ($serial) {
 			$this->retrieve_record($serial);
 		}
-        
+
 		$this->serial_number = $serial;
 	}
-	
+
 	// ------------------------------------------------------------------------
 
-    
+
 	/**
 	 * Process data sent by postflight
 	 *
@@ -43,7 +45,7 @@ class Devtools_model extends \Model {
 	 **/
 	function process($plist)
 	{
-		
+		// Check if we have data
 		if ( ! $plist){
 			throw new Exception("Error Processing Request: No property list found", 1);
 		}
@@ -51,7 +53,7 @@ class Devtools_model extends \Model {
 		$parser = new CFPropertyList();
 		$parser->parse($plist, CFPropertyList::FORMAT_XML);
 		$myList = $parser->toArray();
-        		
+
 		$typeList = array(
 			'cli_tools' => '',
 			'xquartz' => '',
@@ -68,10 +70,12 @@ class Devtools_model extends \Model {
 			'tvos_simulator_sdks' => '',
 			'watchos_sdks' => '',
 			'watchos_simulator_sdks' => '',
+			'ipados_sdks' => '',
+			'ipados_simulator_sdks' => '',
 		);
-		
+
 		foreach ($myList as $tool) {
-            
+
 			foreach ($typeList as $key => $value) {
 				$this->rs[$key] = $value;
 				if(array_key_exists($key, $tool))
@@ -79,7 +83,7 @@ class Devtools_model extends \Model {
 					$this->rs[$key] = $tool[$key];
 				}
 			}
-			
+
             // Trim off the ending comma and space
             $this->rs['ios_sdks'] = substr_replace($this->rs['ios_sdks'] ,"",-2);
             $this->rs['ios_simulator_sdks'] = substr_replace($this->rs['ios_simulator_sdks'] ,"",-2);
@@ -88,6 +92,8 @@ class Devtools_model extends \Model {
             $this->rs['tvos_simulator_sdks'] = substr_replace($this->rs['tvos_simulator_sdks'] ,"",-2);
             $this->rs['watchos_sdks'] = substr_replace($this->rs['watchos_sdks'] ,"",-2);
             $this->rs['watchos_simulator_sdks'] = substr_replace($this->rs['watchos_simulator_sdks'] ,"",-2);
+            $this->rs['ipados_sdks'] = substr_replace($this->rs['watchos_sdks'] ,"",-2);
+            $this->rs['ipados_simulator_sdks'] = substr_replace($this->rs['watchos_simulator_sdks'] ,"",-2);
 
             //Save the data (also save the whales)
             $this->save();

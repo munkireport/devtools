@@ -28,17 +28,17 @@ def get_dev_info():
         plist = plistlib.readPlistFromString(output)
         # system_profiler xml is an array
         sp_dict = plist[0]
-        items = sp_dict['_items']
+        items = sp_dict['_items'][0]
         return items
     except Exception:
         return {}
-    
+
 def get_additional_tools():
-    
+
     # Create the variables
     xquartz = ''
     cli_tools = ''
-        
+
     # Get XQuartz version, only for 10.6 and higher
     if getOsVersion() > 5:
         cmd = ['/usr/sbin/pkgutil', '--pkg-info=org.macosforge.xquartz.pkg']
@@ -52,7 +52,7 @@ def get_additional_tools():
                 break
             else:
                 xquartz = ''
-    
+
     # Get command lines tools version, different for 10.8 and below
     if getOsVersion() < 9:
         cmd = ['/usr/sbin/pkgutil', '--pkg-info=com.apple.pkg.DeveloperToolsCLI']
@@ -68,80 +68,75 @@ def get_additional_tools():
             break
         else:
             cli_tools = ''
-    
+
     # Build list containing additional tools information
     items = {'cli_tools': cli_tools, 'xquartz': xquartz}
     return items
 
-def flatten_dev_info(array):
-    '''Un-nest dev info, return array with objects with relevant keys'''
-    out = []
-    for obj in array:
-        device = get_additional_tools()
-        for item in obj:
-            if item == '_items':
-                out = out + flatten_dev_info(obj['_items'])
-            elif item == 'spdevtools_path':
-                device['devtools_path'] = obj[item]
-            elif item == 'spdevtools_version':
-                device['devtools_version'] = obj[item]
-                
-            # Process each devtool app
-            elif item == 'spdevtools_apps':
-                for tool in obj['spdevtools_apps']:
-                    if tool == 'spinstruments_app':
-                        device['instruments_version'] = obj['spdevtools_apps'][tool]
-                    elif tool == 'spxcode_app':
-                        device['xcode_version'] = obj['spdevtools_apps'][tool]
-                    elif tool == 'spdashcode_app':
-                        device['dashcode_version'] = obj['spdevtools_apps'][tool]
-                    elif tool == 'spib_app':
-                        device['interface_builder_version'] = obj['spdevtools_apps'][tool]
-                            
-            # Process each SDK
-            elif item == 'spdevtools_sdks':
-                for sdk in obj['spdevtools_sdks']:
-                    if sdk == 'iOS' or sdk == 'spios_sdks' or sdk == 'spiphoneos_sdks':                        
-                        device['ios_sdks'] = ''.join('{} {}, '.format(key, val) for key, val in obj['spdevtools_sdks'][sdk].items())
-                    elif sdk == 'iOS Simulator' or sdk == 'spiossim_sdks' or sdk == 'spiphonesim_sdks':
-                        device['ios_simulator_sdks'] = ''.join('{} {}, '.format(key, val) for key, val in obj['spdevtools_sdks'][sdk].items())
-                    elif sdk == 'macOS' or sdk == 'sposx_sdks' or sdk == 'spmacosx_sdks':
-                        device['macos_sdks'] = ''.join('{} {}, '.format(key, val) for key, val in obj['spdevtools_sdks'][sdk].items())
-                    elif sdk == 'tvOS':
-                        device['tvos_sdks'] = ''.join('{} {}, '.format(key, val) for key, val in obj['spdevtools_sdks'][sdk].items())
-                    elif sdk == 'tvOS Simulator':
-                        device['tvos_simulator_sdks'] = ''.join('{} {}, '.format(key, val) for key, val in obj['spdevtools_sdks'][sdk].items())
-                    elif sdk == 'watchOS':
-                        device['watchos_sdks'] = ''.join('{} {}, '.format(key, val) for key, val in obj['spdevtools_sdks'][sdk].items())
-                    elif sdk == 'watchOS Simulator':
-                        device['watchos_simulator_sdks'] = ''.join('{} {}, '.format(key, val) for key, val in obj['spdevtools_sdks'][sdk].items())
-           
-        out.append(device)
+def flatten_dev_info(obj):
+    '''Return array with objects with relevant keys'''
+
+    out = {}
+    for item in obj:
+        if item == 'spdevtools_path':
+            out['devtools_path'] = obj[item]
+        elif item == 'spdevtools_version':
+            out['devtools_version'] = obj[item]
+
+        # Process each devtool app
+        elif item == 'spdevtools_apps':
+            for tool in obj['spdevtools_apps']:
+                if tool == 'spinstruments_app':
+                    out['instruments_version'] = obj['spdevtools_apps'][tool]
+                elif tool == 'spxcode_app':
+                    out['xcode_version'] = obj['spdevtools_apps'][tool]
+                elif tool == 'spdashcode_app':
+                    out['dashcode_version'] = obj['spdevtools_apps'][tool]
+                elif tool == 'spib_app':
+                    out['interface_builder_version'] = obj['spdevtools_apps'][tool]
+
+        # Process each SDK
+        elif item == 'spdevtools_sdks':
+            for sdk in obj['spdevtools_sdks']:
+                if sdk == 'iOS' or sdk == 'spios_sdks' or sdk == 'spiphoneos_sdks':                        
+                    out['ios_sdks'] = ''.join('{} {}, '.format(key, val) for key, val in obj['spdevtools_sdks'][sdk].items())
+                elif sdk == 'iOS Simulator' or sdk == 'spiossim_sdks' or sdk == 'spiphonesim_sdks':
+                    out['ios_simulator_sdks'] = ''.join('{} {}, '.format(key, val) for key, val in obj['spdevtools_sdks'][sdk].items())
+                elif sdk == 'macOS' or sdk == 'sposx_sdks' or sdk == 'spmacosx_sdks':
+                    out['macos_sdks'] = ''.join('{} {}, '.format(key, val) for key, val in obj['spdevtools_sdks'][sdk].items())
+                elif sdk == 'tvOS':
+                    out['tvos_sdks'] = ''.join('{} {}, '.format(key, val) for key, val in obj['spdevtools_sdks'][sdk].items())
+                elif sdk == 'tvOS Simulator':
+                    out['tvos_simulator_sdks'] = ''.join('{} {}, '.format(key, val) for key, val in obj['spdevtools_sdks'][sdk].items())
+                elif sdk == 'watchOS':
+                    out['watchos_sdks'] = ''.join('{} {}, '.format(key, val) for key, val in obj['spdevtools_sdks'][sdk].items())
+                elif sdk == 'watchOS Simulator':
+                    out['watchos_simulator_sdks'] = ''.join('{} {}, '.format(key, val) for key, val in obj['spdevtools_sdks'][sdk].items())
+                elif sdk == 'iPadOS':
+                    out['ipados_sdks'] = ''.join('{} {}, '.format(key, val) for key, val in obj['spdevtools_sdks'][sdk].items())
+                elif sdk == 'iPadOS Simulator':
+                    out['ipados_simulator_sdks'] = ''.join('{} {}, '.format(key, val) for key, val in obj['spdevtools_sdks'][sdk].items())
+
     return out
     
+def merge_two_dicts(x, y):
+    z = x.copy()
+    z.update(y)
+    return z
 
 def main():
     """Main"""
-    # Create cache dir if it does not exist
-    cachedir = '%s/cache' % os.path.dirname(os.path.realpath(__file__))
-    if not os.path.exists(cachedir):
-        os.makedirs(cachedir)
-
-    # Skip manual check
-    if len(sys.argv) > 1:
-        if sys.argv[1] == 'manualcheck':
-            print 'Manual check: skipping'
-            exit(0)
 
     # Get results
     result = dict()
     info = get_dev_info()
-    result = flatten_dev_info(info)
-    
+    result = merge_two_dicts(get_additional_tools(), flatten_dev_info(info))
+
     # Write devtools results to cache
+    cachedir = '%s/cache' % os.path.dirname(os.path.realpath(__file__))
     output_plist = os.path.join(cachedir, 'devtools.plist')
     plistlib.writePlist(result, output_plist)
-    #print plistlib.writePlistToString(result)
+#    print plistlib.writePlistToString(result)
 
 if __name__ == "__main__":
     main()

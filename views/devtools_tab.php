@@ -1,5 +1,5 @@
 <h2 data-i18n="devtools.clienttab"></h2>
-	
+
 <div id="devtools-msg" data-i18n="listing.loading" class="col-lg-12 text-center"></div>
 	<div id="devtools-view" class="row hide">
 		<div class="col-md-4">
@@ -37,6 +37,10 @@
 					<td id="devtools-xquartz"></td>
 				</tr>
 				<tr>
+					<th data-i18n="devtools.macos_sdks"></th>
+					<td id="devtools-macos_sdks"></td>
+				</tr>
+				<tr>
 					<th data-i18n="devtools.ios_sdks"></th>
 					<td id="devtools-ios_sdks"></td>
 				</tr>
@@ -45,8 +49,12 @@
 					<td id="devtools-ios_simulator_sdks"></td>
 				</tr>
 				<tr>
-					<th data-i18n="devtools.macos_sdks"></th>
-					<td id="devtools-macos_sdks"></td>
+					<th data-i18n="devtools.ipados_sdks"></th>
+					<td id="devtools-ipados_sdks"></td>
+				</tr>
+				<tr>
+					<th data-i18n="devtools.ipados_simulator_sdks"></th>
+					<td id="devtools-ipados_simulator_sdks"></td>
 				</tr>
 				<tr>
 					<th data-i18n="devtools.tvos_sdks"></th>
@@ -69,13 +77,13 @@
 	</div>
 <script>
 $(document).on('appReady', function(e, lang) {
-	
+
 	// Get devtools data
 	$.getJSON( appUrl + '/module/devtools/get_data/' + serialNumber, function( data ) {
 		if( ! data.devtools_version){
             $('#devtools-msg').text(i18n.t('no_data'));
 		} else {
-			
+
             // Hide
             $('#devtools-msg').text('');
             $('#devtools-view').removeClass('hide');
@@ -87,9 +95,11 @@ $(document).on('appReady', function(e, lang) {
             $('#devtools-devtools_version').text(data.devtools_version);
             $('#devtools-instruments_version').text(data.instruments_version);
             $('#devtools-interface_builder_version').text(data.interface_builder_version);
+            $('#devtools-macos_sdks').text(data.macos_sdks);
             $('#devtools-ios_sdks').text(data.ios_sdks);  
             $('#devtools-ios_simulator_sdks').text(data.ios_simulator_sdks);
-            $('#devtools-macos_sdks').text(data.macos_sdks);
+            $('#devtools-ipados_sdks').text(data.ipados_sdks);  
+            $('#devtools-ipados_simulator_sdks').text(data.ipados_simulator_sdks);
             $('#devtools-tvos_sdks').text(data.tvos_sdks);
             $('#devtools-tvos_simulator_sdks').text(data.tvos_simulator_sdks);
             $('#devtools-watchos_sdks').text(data.watchos_sdks);
@@ -99,5 +109,5 @@ $(document).on('appReady', function(e, lang) {
 		}
 	});    
 });
-    
+
 </script>

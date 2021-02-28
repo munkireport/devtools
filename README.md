@@ -3,7 +3,10 @@ Devtools Module
 
 Details information about the development tools on the Mac.
 
-Database:
+
+Table Schema
+---
+
 * cli_tools - VARCHAR(255) - Version of Command Line Tools installed
 * dashcode_version - VARCHAR(255) - Dashcode version installed
 * devtools_path - TEXT - Path to Xcode
@@ -19,5 +22,6 @@ Database:
 * watchos_simulator_sdks - TEXT - Installed versions of the watchOS simulator SDK installed
 * xcode_version - VARCHAR(255) - Version of Xcode installed
 * xquartz - VARCHAR(255) - Version of XQuartz installed
-
+* ipados_sdks - TEXT - Installed versions of the iPadOS SDK installed
+* ipados_simulator_sdks - TEXT - Installed versions of the iPadOS simulator SDK installed
 
