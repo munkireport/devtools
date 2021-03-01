@@ -48,6 +48,7 @@
 					<th data-i18n="devtools.ios_simulator_sdks"></th>
 					<td id="devtools-ios_simulator_sdks"></td>
 				</tr>
+<!--
 				<tr>
 					<th data-i18n="devtools.ipados_sdks"></th>
 					<td id="devtools-ipados_sdks"></td>
@@ -56,6 +57,7 @@
 					<th data-i18n="devtools.ipados_simulator_sdks"></th>
 					<td id="devtools-ipados_simulator_sdks"></td>
 				</tr>
+-->
 				<tr>
 					<th data-i18n="devtools.tvos_sdks"></th>
 					<td id="devtools-tvos_sdks"></td>
@@ -80,7 +82,7 @@ $(document).on('appReady', function(e, lang) {
 
 	// Get devtools data
 	$.getJSON( appUrl + '/module/devtools/get_data/' + serialNumber, function( data ) {
-		if( ! data.devtools_version){
+		if( ! data.devtools_version && ! data.cli_tools && ! data.xcode_version && ! data.xquartz){
             $('#devtools-msg').text(i18n.t('no_data'));
 		} else {
 

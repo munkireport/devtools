@@ -16,8 +16,8 @@ table:
     - {i18n_header: devtools.macos_sdks, column: devtools.macos_sdks}
     - {i18n_header: devtools.ios_sdks, column: devtools.ios_sdks}
     - {i18n_header: devtools.ios_sim_sdks, column: devtools.ios_simulator_sdks}
-    - {i18n_header: devtools.ipados_sdks, column: devtools.ipados_sdks}
-    - {i18n_header: devtools.ipados_sim_sdks, column: devtools.ipados_simulator_sdks}
+#    - {i18n_header: devtools.ipados_sdks, column: devtools.ipados_sdks}
+#    - {i18n_header: devtools.ipados_sim_sdks, column: devtools.ipados_simulator_sdks}
     - {i18n_header: devtools.tvos_sdks, column: devtools.tvos_sdks}
     - {i18n_header: devtools.tvos_sim_sdks, column: devtools.watchos_sdks}
     - {i18n_header: devtools.watchos_sdks, column: devtools.tvos_simulator_sdks}
